@@ -54,24 +54,24 @@ def crawl_data(args) -> list:
     Fonction qui permet de scraper des articles sur une plateforme donnée en utilisant Selenium.
     Cette fonction se connecte à un site web, effectue des recherches en utilisant des mots-clés,
     et scrape les textes des articles correspondants.Les textes et les titres des articles sont ensuite enregistrés
-    au format JSON Lines dans le dossier spécifié.
+    au format JSON Lines dans le dossier spécifié
 
     Entrée:
     params (dict): Dictionnaire contenant des paramètres nécessaires pour le scraping, tels que:
-          - 'start_urls': URL de connexion
-          - 'login': Nom d'utilisateur pour la connexion
-          - 'mdp': Mot de passe pour la connexion
-          - 'keywords': Liste des mots-clés pour la recherche
-          - 'step': Taille du pas de défilement pour le scrolling
-          - 'latency': Délai pour laisser le temps à la page de charger
-          - 'scrolls_number': Nombre de défilements nécessaires pour charger le contenu
-          - 'nb_texts_to_scrap': Nombre de textes à scraper pour chaque mot-clé
-          - 'folder': Nom du dossier où les données sont stockées
-          - 'max_length' : Nombre maximum de mots contenus dans le texte
-          - 'min_length' : Nombre minimum de mots contenus dans le texte
+          - start_urls: URL de connexion
+          - login: Nom d'utilisateur pour la connexion
+          - mdp: Mot de passe pour la connexion
+          - keywords: Liste des mots-clés pour la recherche
+          - step: Taille du pas de défilement pour le scrolling
+          - latency: Délai pour laisser le temps à la page de charger
+          - scrolls_number Nombre de défilements nécessaires pour charger le contenu
+          - nb_texts_to_scrap: Nombre de textes à scraper pour chaque mot-clé
+          - folder: Nom du dossier où les données sont stockées
+          - max_length : Nombre maximum de mots contenus dans le texte
+          - min_length : Nombre minimum de mots contenus dans le texte
     Sortie:
-        - Retourne la liste des textes scrappés, organisé sous forme de dictionnaire.
-        Chaque dictionnaire contient des clés comme 'texte', 'label', 'url', 'title', et 'id'
+        - Retourne la liste des textes scrappés, organisé sous forme de dictionnaire
+        Chaque dictionnaire contient des clés comme texte, label, url, title, et id
     """
 
     data_list = []
@@ -100,7 +100,7 @@ def crawl_data(args) -> list:
     driver = webdriver.Firefox(options=options)
 
     try:
-        # Connexion
+        # Ouverture de l'url
         driver.get(args.start_urls)
         time.sleep(2)
 
@@ -110,7 +110,7 @@ def crawl_data(args) -> list:
         driver.find_element(By.TAG_NAME, "form").submit()
         time.sleep(2)
 
-        # Vérifier si on est toujours sur la page de connexion
+        # Vérifier si on est toujours sur la page de connexion  (ex. si le mdp fonctionne pas)
         if driver.current_url == args.start_urls:
             print("Échec de connexion: login ou mot de passe incorrect")
             return None
@@ -130,7 +130,7 @@ def crawl_data(args) -> list:
             select_source.select_by_value("210340")  # France
             time.sleep(latency)
 
-            # Entrer les mots-clés
+            # Entrer les mots-clés dans la barre de recherche
             keywords_input = driver.find_element(By.ID, "Keywords")
             keywords_input.clear()
             keywords_input.send_keys("SECT=", keyword)
